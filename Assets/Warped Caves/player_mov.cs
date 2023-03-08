@@ -7,8 +7,17 @@ public class player_mov : MonoBehaviour
     private Rigidbody2D rigid;
     private float h;
     public float vel;
+    public float j_force;
     private Animator anim;
-    
+    //for shoting
+    bool lado = false;
+    bool jump = false;
+
+    //en-tierra
+    const float player_size = 0.2f;
+    public LayerMask esto_tierra;
+    public Transform tierra_verificada;
+
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -18,8 +27,35 @@ public class player_mov : MonoBehaviour
     void FixedUpdate()
     {
         h = Input.GetAxis("Horizontal");
-        //int a = Convert.ToInt32(h);
+        if(h < 0 && !lado){
+            lado = !lado;
+            transform.Rotate(0f,180f,0f);
+        }else if (h > 0 && lado){
+            lado = !lado;
+            transform.Rotate(0f,180f,0f);
+        }
+        
         anim.SetFloat("run",h);
         rigid.MovePosition(rigid.position + new Vector2(h,0) * vel * Time.deltaTime);
+        esta_en_tierra();
+        if(Input.GetButton("Jump") && !jump){
+            jump = true;
+            Debug.Log("esta saltando");
+            anim.SetBool("EstaSaltando", true);
+            rigid.AddForce(new Vector2(0f, j_force));
+        }
+        
+    }
+
+    void esta_en_tierra(){
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(tierra_verificada.position, player_size,esto_tierra);
+        for(int i = 0; i < colliders.Length; i++){
+            if(colliders[i].gameObject != gameObject){
+                jump = false;
+                anim.SetBool("EstaSaltando",false);
+            }
+        }
+        
     }
 }
