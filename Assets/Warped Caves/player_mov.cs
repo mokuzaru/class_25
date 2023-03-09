@@ -11,7 +11,7 @@ public class player_mov : MonoBehaviour
     private Animator anim;
     //for shoting
     bool lado = false;
-    bool jump = false;
+    bool jump = true;
 
     //en-tierra
     const float player_size = 0.2f;
@@ -40,7 +40,6 @@ public class player_mov : MonoBehaviour
         esta_en_tierra();
         if(Input.GetButton("Jump") && !jump){
             jump = true;
-            Debug.Log("esta saltando");
             anim.SetBool("EstaSaltando", true);
             rigid.AddForce(new Vector2(0f, j_force));
         }
