@@ -45,7 +45,7 @@ public class guardar : MonoBehaviour
 
     private void mostrar(){
         XmlNode rootNode = xmlDoc.SelectSingleNode("data");
-        XmlNode score = xmlDoc.SelectSingleNode("score");
+        XmlNode score = rootNode.SelectSingleNode("score");
         if(score.InnerText == ""){
             Debug.Log("no tiene score registrado");
         }else{
