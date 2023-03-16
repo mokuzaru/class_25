@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <data>
-    <nombre></nombre>
-    <score></score>
+  <nombre>player One</nombre>
+  <scoreXml>10</scoreXml>
 </data>

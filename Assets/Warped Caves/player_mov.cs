@@ -18,6 +18,10 @@ public class player_mov : MonoBehaviour
     public LayerMask esto_tierra;
     public Transform tierra_verificada;
 
+    //for shooting
+    public Transform firePoint;
+    public GameObject bulletPrefab;
+  
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -43,7 +47,23 @@ public class player_mov : MonoBehaviour
             anim.SetBool("EstaSaltando", true);
             rigid.AddForce(new Vector2(0f, j_force));
         }
+        if(Input.GetButtonDown("Fire1")){
+            anim.SetBool("disparando",true);
+            
+            shoot();
+            StartCoroutine(stop_anim());
+        }
+    }
+
+    void shoot(){
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         
+    }
+
+    IEnumerator stop_anim(){
+        Debug.Log("estamos en la coroutine");
+        yield return new WaitForSeconds(.8f);
+        anim.SetBool("disparando",false);
     }
 
     void esta_en_tierra(){
