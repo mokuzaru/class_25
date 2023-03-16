@@ -8,14 +8,14 @@ public class guardar : MonoBehaviour
 {
     private string path;
     private string fileInfo;
-    private XmlDocument xmlDoc;
+    public static XmlDocument xmlDoc;
     private TextAsset textXml;
     private List<data> datos;
-    private string fileName;
+    public static string fileName;
 
     struct data{
         public string nombre;
-        public int score;
+        public string scoreXml;
     }
     
     void Awake()
@@ -30,7 +30,7 @@ public class guardar : MonoBehaviour
     }
     void Update()
     {
-        
+        //modificaXml("player One", scoreXml.puntaje.ToString());
     }
 
     private void LoadXMLFromAssets(){
@@ -43,19 +43,35 @@ public class guardar : MonoBehaviour
         }
     }
 
-    private void mostrar(){
+    public static void mostrar(){
         XmlNode rootNode = xmlDoc.SelectSingleNode("data");
-        XmlNode score = rootNode.SelectSingleNode("score");
-        if(score.InnerText == ""){
+        XmlNode scoreXml = rootNode.SelectSingleNode("scoreXml");
+        if(scoreXml.InnerText == ""){
             Debug.Log("no tiene score registrado");
         }else{
-            Debug.Log(score.InnerText);
+            Debug.Log(scoreXml.InnerText);
+            score.puntaje = int.Parse(scoreXml.InnerText) ;
         }
     }
 
-    private string getPath(){
+    //Add data to data.xml file
+    public static void modificaXml(string nombre, string score){
+        XmlNode rootNode = xmlDoc.SelectSingleNode("data");
+
+        data tempData = new data();
+        
+        tempData.nombre = nombre;
+        tempData.scoreXml = score;
+
+        rootNode.SelectSingleNode("nombre").InnerText = tempData.nombre;
+        rootNode.SelectSingleNode("scoreXml").InnerText = tempData.scoreXml;
+
+        xmlDoc.Save(getPath()+".xml");
+    }
+
+    public static string getPath(){
         #if UNITY_EDITOR
-        return Application.dataPath + "/Resources"+fileName;
+        return Application.dataPath + "/Resources/"+fileName;
         #elif UNITY_ANDROID
         return Application.persistentDataPath+fileName;
         #else
