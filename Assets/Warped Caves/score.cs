@@ -11,6 +11,7 @@ public class score : MonoBehaviour
     void Start()
     {
         puntaje = 0;
+        guardar.mostrar();
         texto.GetComponent<TextMeshProUGUI>().text = "Score : 0";
     }
 
