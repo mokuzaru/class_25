@@ -9,9 +9,12 @@ public class player_mov : MonoBehaviour
     public float vel;
     public float j_force;
     private Animator anim;
-    //for shoting
+    //for jumping
     bool lado = false;
     bool jump = true;
+
+    //Vida player
+    public static int vida;
 
     //en-tierra
     const float player_size = 0.2f;
@@ -24,6 +27,8 @@ public class player_mov : MonoBehaviour
   
     void Start()
     {
+
+        vida = 100;
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
@@ -48,10 +53,15 @@ public class player_mov : MonoBehaviour
             rigid.AddForce(new Vector2(0f, j_force));
         }
         if(Input.GetButtonDown("Fire1")){
-            anim.SetBool("disparando",true);
             
+            StartCoroutine(stop_anim(0f,true, 1.1f));
             shoot();
-            StartCoroutine(stop_anim());
+            StartCoroutine(stop_anim(0.8f,false, 0f));
+        }
+
+        Debug.Log("Vida: " + vida);
+        if(vida < 1){
+            Time.timeScale = 0f;
         }
     }
 
@@ -60,10 +70,10 @@ public class player_mov : MonoBehaviour
         
     }
 
-    IEnumerator stop_anim(){
-        Debug.Log("estamos en la coroutine");
-        yield return new WaitForSeconds(.8f);
-        anim.SetBool("disparando",false);
+    IEnumerator stop_anim(float t, bool status, float t2){
+        yield return new WaitForSeconds(t);
+        anim.SetBool("disparando",status);
+        yield return new WaitForSeconds(t2);
     }
 
     void esta_en_tierra(){
@@ -75,6 +85,11 @@ public class player_mov : MonoBehaviour
                 anim.SetBool("EstaSaltando",false);
             }
         }
-        
+    }
+
+    void OnCollisionEnter2D(Collision2D collision){
+        if(collision.gameObject.tag == "enemy"){
+            vida = vida - 20;
+        }
     }
 }
