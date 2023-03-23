@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class enemy1 : MonoBehaviour
 {
-    public static int enemyLive = 100;
+    public static int enemylive = 100;
     private Animator anim;
-    void Start()
-    {
+    public GameObject impacEffct;
+    void Start(){
         anim = GetComponent<Animator>();
     }
     void OnTriggerStay2D(Collider2D col){
@@ -18,6 +18,18 @@ public class enemy1 : MonoBehaviour
     void OnTriggerExit2D(Collider2D col){
         if(col.name == "player"){
             anim.SetBool("saltar",false);
+        }
+    }
+
+    public void TomarDanio(int danio){
+        enemylive = enemylive - danio;
+        Debug.Log(gameObject.name);
+    }
+
+    void Update(){
+        if(enemylive < 1 ){
+            Instantiate(impacEffct, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
     }
 }

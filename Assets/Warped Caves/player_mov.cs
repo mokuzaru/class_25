@@ -59,7 +59,6 @@ public class player_mov : MonoBehaviour
             StartCoroutine(stop_anim(0.8f,false, 0f));
         }
 
-        Debug.Log("Vida: " + vida);
         if(vida < 1){
             Time.timeScale = 0f;
         }
@@ -89,6 +88,7 @@ public class player_mov : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision){
         if(collision.gameObject.tag == "enemy"){
+            Debug.Log("Entro en el colider");
             vida = vida - 20;
         }
     }
