@@ -18,7 +18,6 @@ public class bullet : MonoBehaviour
 
             //Quitarle vida o destruirlo
             string obj = col.gameObject.name;
-            Debug.Log(obj);
             enemigo = GameObject.Find(obj);
             enemy1 script = enemigo.GetComponent<enemy1>();
             script.TomarDanio(damage);

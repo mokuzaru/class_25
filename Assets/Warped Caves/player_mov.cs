@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class player_mov : MonoBehaviour
 {
@@ -24,10 +25,14 @@ public class player_mov : MonoBehaviour
     //for shooting
     public Transform firePoint;
     public GameObject bulletPrefab;
+
+    //popups gameobject
+    public Canvas popups;
   
     void Start()
     {
-
+        Time.timeScale = 1f;
+        popups.enabled = false;
         vida = 100;
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -60,6 +65,8 @@ public class player_mov : MonoBehaviour
         }
 
         if(vida < 1){
+            //Activar popus
+            popups.enabled = true;
             Time.timeScale = 0f;
         }
     }
@@ -90,6 +97,21 @@ public class player_mov : MonoBehaviour
         if(collision.gameObject.tag == "enemy"){
             Debug.Log("Entro en el colider");
             vida = vida - 20;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other){
+        if(other.gameObject.tag == "abyss"){
+            Debug.Log("Perdiste");
+            //Activar popups
+            popups.enabled = true;
+            Debug.Log("Popup active");
+            Time.timeScale = 0f;
+        }
+        if(other.gameObject.tag == "flag"){
+            Debug.Log("Ganaste!");
+            popups.enabled = true;
+            Time.timeScale = 0f;
         }
     }
 }
